@@ -55,6 +55,7 @@ def load_and_clean_users(file_path):
             if len(row) == len(header) and all(entry.strip() != '' for entry in row):
                 print(row)
                 cursor.execute(f'INSERT INTO users ({(',').join(header)}) VALUES({(','.join(['?'] * len(header)))})', row)
+    print(cursor.execute('SELECT * FROM users').fetchall())
 
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
@@ -76,6 +77,8 @@ def write_user_analytics(csv_file_path):
         writer.writerow(['userId', 'avgDuration', 'numCalls'])
 
         num_users = cursor.execute('SELECT COUNT(*) FROM users').fetchone()[0]
+        print(cursor.execute('SELECT * FROM users').fetchall())
+        print(num_users)
         
         for i in range(num_users):
             avg_duration = cursor.execute(f'SELECT AVG(endTime - startTime) FROM callLogs WHERE userId = {i+1}').fetchone()[0]
