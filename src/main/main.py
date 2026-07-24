@@ -52,7 +52,8 @@ def load_and_clean_users(file_path):
         reader = csv.reader(f)
         header = next(reader)
         for row in reader:
-            if len(row) == len(header) and '' not in row:
+            if len(row) == len(header) and all(entry.strip() != '' for entry in row):
+                print(row)
                 cursor.execute(f'INSERT INTO users ({(',').join(header)}) VALUES({(','.join(['?'] * len(header)))})', row)
 
 
@@ -62,7 +63,7 @@ def load_and_clean_call_logs(file_path):
         reader = csv.reader(f)
         header = next(reader)
         for row in reader:
-            if len(row) == len(header) and '' not in row:
+            if len(row) == len(header) and all(entry.strip() != '' for entry in row):
                 cursor.execute(f'INSERT INTO callLogs ({(',').join(header)}) VALUES({(','.join(['?'] * len(header)))})', row)
 
 
