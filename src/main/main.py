@@ -80,7 +80,8 @@ def write_user_analytics(csv_file_path):
         for i in range(num_users):
             avg_duration = cursor.execute(f'SELECT AVG(endTime - startTime) FROM callLogs WHERE userId = {i+1}').fetchone()[0]
             num_calls = cursor.execute(f'SELECT COUNT(*) FROM callLogs WHERE userId = {i+1}').fetchone()[0]
-            writer.writerow([i+1, avg_duration, num_calls])
+            if num_calls:
+                writer.writerow([i+1, avg_duration, num_calls])
 
 
 # This function will write the callLogs ordered by userId, then start time.
